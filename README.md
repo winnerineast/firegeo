@@ -2,7 +2,7 @@
 
 <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjh4N3VwdGw2YXg2ZXpvMHBlNDFlejd1MjBpZXBxNHZ5YXJxOGk5OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/x2sTqbCW5m7z0qaNJM/giphy.gif" alt="FireGEO Demo" width="100%" />
 
-A production-ready SaaS starter template with authentication, billing, AI chat, and advanced brand monitoring capabilities. Built with Next.js 15, TypeScript, PostgreSQL, and modern web technologies.
+Get your SaaS running in minutes with authentication, billing, AI chat, and brand monitoring. Zero-config setup with Next.js 15, TypeScript, and PostgreSQL.
 
 ![Next.js](https://img.shields.io/badge/Next.js-15.3-black?style=flat-square&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?style=flat-square&logo=typescript)
@@ -68,11 +68,6 @@ cp .env.example .env.local
 - `DATABASE_URL` - PostgreSQL connection string (required)
 - `BETTER_AUTH_SECRET` - Generate with `openssl rand -base64 32` (required)
 
-**Optional API Keys** (for full functionality):
-- `AUTUMN_SECRET_KEY` - For billing features ([get from Autumn](https://useautumn.com))
-- `STRIPE_SECRET_KEY` - For payments ([get from Stripe](https://dashboard.stripe.com))
-- `FIRECRAWL_API_KEY` - For brand monitoring ([get from Firecrawl](https://app.firecrawl.dev))
-- `OPENAI_API_KEY` - For AI chat ([get from OpenAI](https://platform.openai.com))
 
 ```bash
 # Run the automated setup
