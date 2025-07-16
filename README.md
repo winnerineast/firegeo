@@ -42,7 +42,6 @@ The setup script will automatically:
 - Generate Better Auth tables
 - Apply database migrations
 - Configure Autumn billing (if API key provided)
-- Setup Stripe customer portal (if configured)
 - Get you ready to develop
 
 ### Start Development
@@ -101,14 +100,7 @@ npm run db:push
 npm run setup:autumn
 ```
 
-### 6. Set Up Stripe Customer Portal (Optional)
-
-```bash
-# This configures the Stripe customer portal for subscription management
-npm run setup:stripe-portal
-```
-
-### 7. Verify Setup
+### 6. Verify Setup
 
 ```bash
 # Check database schema
@@ -135,7 +127,6 @@ npm run build            # Build for production
 npm run start            # Start production server
 
 # Utilities
-npm run setup:stripe-portal  # Configure Stripe portal
 npm run lint             # Run ESLint
 ```
 
@@ -148,7 +139,7 @@ npm run lint             # Run ESLint
 | **Web Scraping** | Firecrawl |
 | **Database** | PostgreSQL, Drizzle ORM |
 | **Authentication** | Better Auth |
-| **Payments** | Stripe + Autumn |
+| **Payments** | Autumn (with Stripe integration) |
 | **AI Providers** | OpenAI, Anthropic, Google Gemini, Perplexity |
 | **Email** | Resend |
 
@@ -159,7 +150,7 @@ fire-saas-geo-latest/
 ├── app/                    # Next.js app directory
 │   ├── api/               # API routes
 │   │   ├── auth/         # Better Auth endpoints
-│   │   ├── autumn/       # Billing webhooks
+│   │   ├── autumn/       # Billing endpoints (handled by Autumn)
 │   │   ├── brand-monitor/# Brand analysis APIs
 │   │   └── chat/         # AI chat endpoints
 │   ├── (auth)/           # Auth pages (login, register, reset)
@@ -202,7 +193,12 @@ Create a PostgreSQL database at [Supabase](https://supabase.com)
    - Click "Create API Key"
    - Copy the key to `AUTUMN_SECRET_KEY` in `.env.local`
 
-3. **Create Usage Feature**
+3. **Add Stripe Integration**
+   - Go to Integrations → Stripe in Autumn dashboard
+   - Add your Stripe secret key
+   - Autumn handles all webhook configuration automatically
+
+4. **Create Usage Feature**
    - Go to Features → Create Feature
    - **Name**: `Messages`
    - **ID**: `messages` (must match exactly)
@@ -210,7 +206,7 @@ Create a PostgreSQL database at [Supabase](https://supabase.com)
    - **Unit**: `message`
    - Click "Create Feature"
 
-4. **Create Free Product**
+5. **Create Free Product**
    - Go to Products → Create Product
    - **Name**: `Free`
    - **ID**: Leave blank (auto-generated)
@@ -220,7 +216,7 @@ Create a PostgreSQL database at [Supabase](https://supabase.com)
      - Set limit to `100`
    - Click "Create Product"
 
-5. **Create Pro Product**
+6. **Create Pro Product**
    - Go to Products → Create Product
    - **Name**: `Pro`
    - **ID**: `pro` (must match exactly)
@@ -229,23 +225,6 @@ Create a PostgreSQL database at [Supabase](https://supabase.com)
      - Add `Messages` feature
      - Set limit to `0` (unlimited)
    - Click "Create Product"
-
-6. **Connect Stripe** (Required for Pro plan)
-   - Go to Integrations → Stripe
-   - Click "Connect Stripe"
-   - Add your Stripe secret key
-   - Test the connection
-
-7. **Configure Webhooks** (Production only)
-   - Go to Settings → Webhooks
-   - Add endpoint: `https://yourdomain.com/api/autumn/stripe`
-   - Select events: `subscription.created`, `subscription.updated`, `subscription.deleted`
-   - Copy webhook secret to `AUTUMN_WEBHOOK_SECRET` in `.env.local`
-
-#### Stripe
-Get keys from [Stripe Dashboard](https://dashboard.stripe.com/test/apikeys)
-- Copy to `STRIPE_SECRET_KEY` and `STRIPE_PUBLISHABLE_KEY`
-- In Autumn: Integrations → Stripe → Add your Stripe secret key
 
 #### Email
 Sign up at [resend.com](https://resend.com)
@@ -267,9 +246,6 @@ Get your API keys from the following providers:
 # Push database schema
 npm run db:push
 
-# Configure Stripe customer portal (optional)
-npm run setup:stripe-portal
-
 # Start development server
 npm run dev
 ```
@@ -289,9 +265,6 @@ NEXT_PUBLIC_APP_URL=       # Public app URL
 
 # Billing
 AUTUMN_SECRET_KEY=         # From Autumn dashboard
-STRIPE_SECRET_KEY=         # Stripe secret key
-STRIPE_PUBLISHABLE_KEY=    # Stripe public key
-STRIPE_WEBHOOK_SECRET=     # For production webhooks
 
 # Brand Monitor
 FIRECRAWL_API_KEY=         # From Firecrawl
@@ -316,44 +289,8 @@ npm run start                # Start production server
 npm run db:push              # Push schema to database
 npm run db:studio            # Open Drizzle Studio
 npm run db:migrate           # Run migrations
-npm run setup:stripe-portal  # Configure Stripe portal
 ```
 
-## Key Features Explained
-
-### Authentication System
-The app uses Better Auth for a complete authentication solution:
-- Email/password registration and login
-- Secure session management with httpOnly cookies
-- Protected API routes and pages
-- Built-in password reset flow
-- Extensible user profiles
-
-### Billing Integration
-Autumn provides a complete billing solution:
-- Subscription management
-- Usage-based billing for AI credits
-- Stripe integration for payments
-- Customer portal for self-service
-- Webhook handling for payment events
-
-### AI Chat Interface
-Multi-provider AI chat with advanced features:
-- Provider selection (OpenAI, Anthropic, Google, Perplexity)
-- Conversation management and history
-- Token usage tracking
-- Message feedback system
-- Streaming responses
-- Web search capabilities (provider-dependent)
-
-### Brand Monitor
-Unique brand monitoring and analysis tool:
-- Web scraping with Firecrawl
-- AI-powered brand detection
-- Competitor analysis
-- Visibility scoring and rankings
-- Customizable analysis prompts
-- Export capabilities
 
 ## Production Deployment
 
@@ -369,10 +306,6 @@ vercel --prod
 2. Update `NEXT_PUBLIC_APP_URL` to your domain
 3. Set `NODE_ENV=production`
 
-### Setup Webhooks
-
-- Stripe: Add webhook endpoint `https://yourdomain.com/api/autumn/stripe`
-- Copy webhook secret to `STRIPE_WEBHOOK_SECRET`
 
 ### Run Migrations
 
