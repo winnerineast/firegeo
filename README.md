@@ -9,44 +9,6 @@ Get your SaaS running in minutes with authentication, billing, AI chat, and bran
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38B2AC?style=flat-square&logo=tailwind-css)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791?style=flat-square&logo=postgresql)
 
-## Features
-
-### Authentication & Security
-- Email/password authentication with Better Auth
-- Secure session management (7-day expiry)
-- Protected routes with middleware
-- Rate limiting and CSRF protection
-- Password reset functionality
-
-### Billing & Subscriptions
-- Integrated with Autumn for subscription management
-- Stripe payment processing
-- Usage-based billing (message credits)
-- Free and Pro tiers pre-configured
-- Customer portal with subscription management
-
-### Brand Competitor Analysis
-- Real-time competitor tracking and visibility metrics
-- AI-powered brand detection across web content
-- Comparative analysis with customizable scoring
-- Share of voice and sentiment analysis
-- Export competitor insights and reports
-
-### Brand Monitor (Unique Feature)
-- Real-time web scraping with Firecrawl
-- AI-powered brand detection across web content
-- Competitor analysis and visibility scoring
-- Customizable analysis prompts
-- Visual comparison matrices and rankings
-- Sentiment analysis and share of voice metrics
-
-### Modern UI/UX
-- Beautiful, responsive design with Tailwind CSS v4
-- Dark mode support
-- shadcn/ui component library
-- Loading states and error handling
-- Toast notifications and modals
-
 ## Quick Start
 
 ### Prerequisites
