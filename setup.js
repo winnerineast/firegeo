@@ -26,15 +26,28 @@ const log = {
 // Execute command and return promise
 const exec = (command, args = [], options = {}) => {
   return new Promise((resolve, reject) => {
-    const child = spawn(command, args, { stdio: 'pipe', ...options });
+    const isWindows = process.platform === 'win32';
+    // Use the .cmd suffix for commands on Windows
+    const cmd = isWindows ? `${command}.cmd` : command;
+    // The shell option is crucial for path resolution on Windows
+    const spawnOptions = { stdio: 'pipe', shell: isWindows, ...options };
+
+    const child = spawn(cmd, args, spawnOptions);
+
     let output = '';
     child.stdout?.on('data', data => output += data.toString());
     child.stderr?.on('data', data => output += data.toString());
+
+    // This event handler is key to catching the 'ENOENT' error
+    child.on('error', (err) => {
+      reject(err);
+    });
+
     child.on('close', code => {
       if (code === 0) {
         resolve(output);
       } else {
-        reject(new Error(`${command} failed`));
+        reject(new Error(`Command failed with code ${code}: ${command} ${args.join(' ')}\n${output}`));
       }
     });
   });
